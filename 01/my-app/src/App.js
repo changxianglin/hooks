@@ -1,39 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
+import React, {useContext} from "react";
+
+
+const themes = {
+  light: {
+    foreground: "#000000",
+    background: "#eeeeee"
+  },
+  dark: {
+    foreground: "#ffffff",
+    background: "#222222"
+  }
+};
+
+const ThemeContext = React.createContext(themes.dark);
 
 function App() {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    document.title = `You clicked ${count} times`
-  })
   return (
-    <div className="App">
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
+    <ThemeContext.Provider value={themes.light}>
+      <Toolbar />
+    </ThemeContext.Provider>
+  );
+}
+
+function Toolbar(props) {
+  return (
+    <div>
+      <ThemedButton />
     </div>
   );
 }
 
-// class App extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       count: 0
-//     };
-//   }
-
-//   render() {
-//     return (
-//       <div>
-//         <p>You clicked {this.state.count} times</p>
-//         <button onClick={() => this.setState({ count: this.state.count + 1 })}>
-//           Click me
-//         </button>
-//       </div>
-//     );
-//   }
-// }
-
-export default App;
+function ThemedButton() {
+  const theme = useContext(ThemeContext);
+  return (
+    <button style={{ background: theme.background, color: theme.foreground }}>
+      I am styled by theme context!
+    </button>
+  );
+}
+export default App
