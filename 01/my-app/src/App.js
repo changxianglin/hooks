@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useReducer} from "react";
 
 
 const themes = {
@@ -30,12 +30,44 @@ function Toolbar(props) {
   );
 }
 
+const initialState = {count: 0};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return {count: state.count + 1};
+    case 'decrement':
+      return {count: state.count - 1};
+    default:
+      throw new Error();
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  
+  const jm = () => dispatch({type: 'decrement'})
+  const ja = () => dispatch({type: 'increment'})
+
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={jm}>-</button>
+      <button onClick={ja}>+</button>
+    </>
+  );
+}
+
 function ThemedButton() {
   const theme = useContext(ThemeContext);
   return (
+    <>
     <button style={{ background: theme.background, color: theme.foreground }}>
       I am styled by theme context!
     </button>
+    <hr />
+    <Counter />
+    </>
   );
 }
 export default App
