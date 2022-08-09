@@ -1,6 +1,5 @@
 import React, {useContext, useReducer} from "react";
 
-
 const themes = {
   light: {
     foreground: "#000000",
